@@ -1,4 +1,5 @@
 var CryptoJS = require("crypto-js");
+var express = require("express");
 
 class Block {
 	constructor(index, previousHash, data, hash) {
@@ -72,4 +73,8 @@ var replaceChain = (newBlocks) => {
 	} else {
 		console.log("Received blockchain is invalid.");
 	}
+};
+
+var startHTTPServer = () => {
+
 };
