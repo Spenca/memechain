@@ -67,16 +67,48 @@ var verifyChain = (blockchain) => {
 	}
 };
 
+var latestBlockResponse = () => {
+
+};
+
 var replaceChain = (newBlocks) => {
 	if (verifyChain() && newBlocks.length > blockchain.length) {
 		console.log("Received blockchain is valid. Replacing current blockchain with it.");
 		blockchain = newBlocks;
-		// broadcast(responseLatestMsg());
+		// broadcast(latestBlockResponse());
 	} else {
 		console.log("Received blockchain is invalid.");
 	}
 };
 
-var startHTTPServer = () => {
+var addBlockToChain = (newBlock) => {
+	if (verifyBlock(newBlock, getLatestBlock())) {
+		blockchain.push(newBlock);
+	}
+};
 
+var startHTTPServer = () => {
+	var app = express();
+	app.use(bodyParser.json());
+
+	app.get('/blocks', (req, res) => res.send(JSON.stringify(blockchain)));
+	
+	app.post('mineBlock', (req, res) => {
+		var newBlock = makeNewBlock(req.body.data);
+		addBlockToChain(newBlock);
+		// broadcast(latestBlockResponse());
+		console.log("Block added: " + JSON.stringify(newBlock) +".");
+		res.send();
+	});
+
+	app.get('/peers', (req, res) => {
+  	res.send(sockets.map(s => s._socket.remoteAddress + ":" + s._socket.remotePort));
+  });
+  
+  app.post('/addPeer', (req, res) => {
+    connectToPeers([req.body.peer]);
+    res.send();
+  });
+  
+  app.listen(http_port, () => console.log("Listening for HTTP on port: " + http_port + "."));
 };
