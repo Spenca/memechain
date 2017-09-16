@@ -1,5 +1,7 @@
 var CryptoJS = require("crypto-js");
 var express = require("express");
+var bodyParser = require('body-parser');
+var WebSocket = require("ws");
 
 class Block {
 	constructor(index, previousHash, data, hash) {

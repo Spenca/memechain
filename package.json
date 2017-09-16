@@ -17,7 +17,9 @@
   },
   "homepage": "https://github.com/Spenca/memechain#readme",
   "dependencies": {
+    "body-parser": "^1.18.1",
     "crypto-js": "^3.1.9-1",
-    "express": "^4.15.4"
+    "express": "^4.15.4",
+    "ws": "^3.2.0"
   }
 }
