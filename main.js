@@ -101,19 +101,43 @@ var addBlockToChain = (newBlock) => {
 };
 
 var connectToPeers = (newPeers) => {
-
+	newPeers.forEach((peer) => {
+		var ws = new WebSocket(peer);
+		ws.on("open", () => startConnection(ws));
+		ws.on("error", () => {
+			console.log("Connection failed.")
+		});
+	});
 };
 
 var handleBlockchainResponse = (message) => {
-
+	var receivedBlocks = JSON.parse(message.data).sort((b1, b2) => (b1.index - b2.index));
+    var latestBlockReceived = receivedBlocks[receivedBlocks.length - 1];
+    var latestBlockHeld = getLatestBlock();
+    if (latestBlockReceived.index > latestBlockHeld.index) {
+      console.log("Your blockchain is possibly behind. You have: " + latestBlockHeld.index + " Peer has: " + latestBlockReceived.index);
+      if (latestBlockHeld.hash === latestBlockReceived.previousHash) {
+        console.log("We can append the received block to our chain");
+        blockchain.push(latestBlockReceived);
+        broadcast(latestBlockResponse());
+      } else if (receivedBlocks.length === 1) {
+        console.log("We have to query the chain from our peer");
+        broadcast(queryAllMsg());
+      } else {
+        console.log("Received blockchain is longer than current blockchain");
+        replaceChain(receivedBlocks);
+      }
+    } else {
+      console.log("Received blockchain is not longer than current blockchain. Do nothing");
+    }
 };
 
-var queryChainLengthMsg = () => ({"type": MessageType.QUERY_LATEST});
+var queryChainLengthMsg = () => ({"type": messageType.QUERY_LATEST});
 
-var queryAllMsg = () => ({"type": MessageType.QUERY_ALL});
+var queryAllMsg = () => ({"type": messageType.QUERY_ALL});
 
 var responseChainMsg = () =>({
-	"type": MessageType.RESPONSE_BLOCKCHAIN, 
+	"type": messageType.RESPONSE_BLOCKCHAIN, 
 	"data": JSON.stringify(blockchain)
 });
 
@@ -127,7 +151,7 @@ var startHTTPServer = () => {
 		var newBlock = makeNewBlock(req.body.data);
 		addBlockToChain(newBlock);
 		broadcast(latestBlockResponse());
-		console.log("Block added: " + JSON.stringify(newBlock) +".");
+		console.log("Block added: " + JSON.stringify(newBlock));
 		res.send();
 	});
 
@@ -140,23 +164,47 @@ var startHTTPServer = () => {
     res.send();
   });
   
-  app.listen(httpPort, () => console.log("Listening for HTTP on port: " + httpPort + "."));
+  app.listen(httpPort, () => console.log("Listening for HTTP on port: " + httpPort));
 };
 
 var startP2PServer = () => {
-
+	var server = new WebSocket.Server({port: p2pPort});
+  server.on("connection", ws => initConnection(ws));
+ 	console.log("Listening for websocket P2P on port: " + p2pPort);
 };
 
 var startConnection = (ws) => {
-
+	sockets.push(ws);
+  startMessageHandler(ws);
+  startErrorHandler(ws);
+  write(ws, queryChainLengthMsg());
 };
 
 var startMessageHandler = (ws) => {
-
+	ws.on("message", (data) => {
+		var message = JSON.parse(data);
+      console.log("Received message" + JSON.stringify(message));
+      switch (message.type) {
+        case messageType.QUERY_LATEST:
+          write(ws, latestBlockResponse());
+          break;
+        case messageType.QUERY_ALL:
+          write(ws, responseChainMsg());
+          break;
+        case messageType.RESPONSE_BLOCKCHAIN:
+          handleBlockchainResponse(message);
+          break;
+      }
+	});
 };
 
 var startErrorHandler = (ws) => {
-
+	var closeConnection = (ws) => {
+    console.log("Connection to peer: " + ws.url + "failed.");
+    sockets.splice(sockets.indexOf(ws), 1);
+	};
+	ws.on('close', () => closeConnection(ws));
+	ws.on('error', () => closeConnection(ws));
 };
 
 var write = (ws, message) => ws.send(JSON.stringify(message));
