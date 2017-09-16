@@ -128,7 +128,7 @@ var handleBlockchainResponse = (message) => {
         replaceChain(receivedBlocks);
       }
     } else {
-      console.log("Received blockchain is not longer than current blockchain. Do nothing");
+      console.log("Received blockchain is not longer than current blockchain. Do nothing.");
     }
 };
 
@@ -147,7 +147,7 @@ var startHTTPServer = () => {
 
 	app.get("/blocks", (req, res) => res.send(JSON.stringify(blockchain)));
 	
-	app.post("mineBlock", (req, res) => {
+	app.post("/mineBlock", (req, res) => {
 		var newBlock = makeNewBlock(req.body.data);
 		addBlockToChain(newBlock);
 		broadcast(latestBlockResponse());
@@ -169,7 +169,7 @@ var startHTTPServer = () => {
 
 var startP2PServer = () => {
 	var server = new WebSocket.Server({port: p2pPort});
-  server.on("connection", ws => initConnection(ws));
+  server.on("connection", ws => startConnection(ws));
  	console.log("Listening for websocket P2P on port: " + p2pPort);
 };
 
