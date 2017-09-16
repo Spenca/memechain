@@ -1,3 +1,5 @@
+var CryptoJS = require("crypto-js");
+
 class Block {
 	constructor(index, previousHash, data, hash) {
 		this.index = index;
@@ -7,3 +9,8 @@ class Block {
 		this.timestamp = new Date().getTime();
 	}
 }
+
+var calculateHash = (index, previousHash, data) => {
+	return CryptoJS.SHA256(index + previousHash + data).toString();
+};
+
