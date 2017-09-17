@@ -6,8 +6,8 @@ block content
     tbody
       each m in memes
         tr
-          td= m.index
-          td= m.previousHash
-          td= m.data.title
-          td= m.data.image_url
-    h1 #{JSON.stringify(memes)}
+          p test3
+          .card(style='width: 20rem;')
+            .card-block
+              h4.card-title= m.data.title
+              img(src=m.data.image_url, alt=m.data.title)

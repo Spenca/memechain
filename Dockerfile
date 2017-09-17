@@ -1,14 +1,13 @@
 FROM node:6-slim
 
+RUN npm install --global nodemon
+
 COPY . /starter
 COPY package.json /starter/package.json
 COPY .env.example /starter/.env.example
 
 WORKDIR /starter
 
-ENV NODE_ENV production
-RUN npm install --production
+RUN npm install
 
-CMD ["npm","start"]
-
-EXPOSE 8888
+EXPOSE 8080

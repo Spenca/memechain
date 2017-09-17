@@ -10,6 +10,7 @@
   "license": "MIT",
   "scripts": {
     "start": "node app.js",
+    "dev": "nodemon -L app.js",
     "test": "mocha --reporter spec",
     "postinstall": "npm rebuild node-sass",
     "eslint": "eslint **/*.js"
@@ -49,7 +50,8 @@
     "twilio": "^3.6.3",
     "twit": "^2.2.9",
     "validator": "^8.0.0",
-    "ws": "^3.2.0"
+    "ws": "^3.2.0",
+    "nodemon": "^1.12.1"
   },
   "devDependencies": {
     "chai": "^4.1.1",
@@ -58,6 +60,7 @@
     "eslint-plugin-chai-friendly": "^0.4.0",
     "eslint-plugin-import": "^2.7.0",
     "mocha": "^3.5.0",
+    "nodemon": "^1.12.1",
     "sinon": "^3.2.1",
     "sinon-mongoose": "^2.0.2",
     "supertest": "^3.0.0"
