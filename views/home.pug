@@ -1,0 +1,13 @@
+extends layout
+
+block content
+  h1 memechain
+  table
+    tbody
+      each m in memes
+        tr
+          td= m.index
+          td= m.previousHash
+          td= m.data.title
+          td= m.data.image_url
+    h1 #{JSON.stringify(memes)}
