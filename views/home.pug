@@ -1,12 +1,12 @@
 extends layout
 
 block content
-  h1 memechain
+  h1 the dankest memes
+  br
   table
     tbody
       each m in memes
         tr
-          p test3
           .card(style='width: 20rem;')
             .card-block
               h4.card-title= m.data.title

@@ -26,7 +26,7 @@ var messageType = {
 };
 
 var getGenesisBlock = () => {
-	return new Block(0, "0", {"title": "Rarest Pepe","image_url": "https://imgur.com/pEMGBhR"}, "a3e73f3079c231148bc55eac355bc2b0950e2ee4994b5d0bbfb95388c0dd0dfa", "James and Spencer");
+	return new Block(0, "0", {"title": "Rarest Pepe","image_url": "https://i.imgur.com/pEMGBhR.png"}, "a3e73f3079c231148bc55eac355bc2b0950e2ee4994b5d0bbfb95388c0dd0dfa", "James and Spencer");
 };
 
 var blockchain = [getGenesisBlock()];
