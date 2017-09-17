@@ -6,52 +6,11 @@ block content
   
   form
   .form-group
-    label(for='exampleInputEmail1') Email address
-    input#exampleInputEmail1.form-control(type='email', aria-describedby='emailHelp', placeholder='Enter email')
-    small#emailHelp.form-text.text-muted We'll never share your email with anyone else.
+    label(for='title') Title
+    input#title.form-control(type='text', aria-describedby='titleHelp', placeholder='Enter title', required)
+    small#titleHelp.form-text.text-muted describe your awesome meme.
   .form-group
-    label(for='exampleInputPassword1') Password
-    input#exampleInputPassword1.form-control(type='password', placeholder='Password')
-  .form-group
-    label(for='exampleSelect1') Example select
-    select#exampleSelect1.form-control
-      option 1
-      option 2
-      option 3
-      option 4
-      option 5
-  .form-group
-    label(for='exampleSelect2') Example multiple select
-    select#exampleSelect2.form-control(multiple='')
-      option 1
-      option 2
-      option 3
-      option 4
-      option 5
-  .form-group
-    label(for='exampleTextarea') Example textarea
-    textarea#exampleTextarea.form-control(rows='3')
-  .form-group
-    label(for='exampleInputFile') File input
-    input#exampleInputFile.form-control-file(type='file', aria-describedby='fileHelp')
-    small#fileHelp.form-text.text-muted
-      | This is some placeholder block-level help text for the above input. It's a bit lighter and easily wraps to a new line.
-  fieldset.form-group
-    legend Radio buttons
-    .form-check
-      label.form-check-label
-        input#optionsRadios1.form-check-input(type='radio', name='optionsRadios', value='option1', checked='')
-        |         Option one is this and that—be sure to include why it's great
-    .form-check
-      label.form-check-label
-        input#optionsRadios2.form-check-input(type='radio', name='optionsRadios', value='option2')
-        |         Option two can be something else and selecting it will deselect option one
-    .form-check.disabled
-      label.form-check-label
-        input#optionsRadios3.form-check-input(type='radio', name='optionsRadios', value='option3', disabled='')
-        |         Option three is disabled
-  .form-check
-    label.form-check-label
-      input.form-check-input(type='checkbox')
-      |       Check me out
+    label(for='image') Image
+    input#image.form-control(type='text', aria-describedby='imageHelp', placeholder='Enter image url', required)
+    small#imageHelp.form-text.text-muted give us a link to your meme.
   button.btn.btn-primary(type='submit') Submit

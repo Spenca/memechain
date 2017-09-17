@@ -168,8 +168,6 @@ var responseChainMsg = () =>({
   "data": JSON.stringify(blockchain)
 });
 
-
-
 /**
  * Load environment variables from .env file, where API keys and passwords are configured.
  */
@@ -178,14 +176,12 @@ dotenv.load({ path: '.env.example' });
 /**
  * Controllers (route handlers).
  */
-const createController = require('./controllers/create');
 const userController = require('./controllers/user');
 
 /**
  * API keys and Passport configuration.
  */
 const passportConfig = require('./config/passport');
-
 
 /**
  * Connect to MongoDB.
@@ -266,8 +262,14 @@ app.get('/', function (req, res) {
     memes: blockchain
   });
 });
-app.get('/create', createController.getCreate);
-//app.post('/create', createController.postCreate);
+app.get('/create', function (req, res) {
+  res.render('create', {
+    title: 'Create'
+  });
+});
+app.post('/create', function (req, res) {
+  console.log (req);
+});
 app.get('/login', userController.getLogin);
 app.post('/login', userController.postLogin);
 app.get('/logout', userController.logout);
